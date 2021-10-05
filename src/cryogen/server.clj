@@ -12,15 +12,19 @@
    [cryogen-core.config :refer [resolve-config]]
    [cryogen-core.io :refer [path]]))
 
+(def opts
+  {:extend-params-fn (fn extend-params [p site]
+                       (merge p site))})
+
 (defn init [fast?]
   (println "Init: fast compile enabled = " (boolean fast?))
   (load-plugins)
-  (compile-assets-timed)
+  (compile-assets-timed opts)
   (let [ignored-files (-> (resolve-config) :ignored-files)]
     (run!
       #(if fast?
-         (start-watcher-for-changes! % ignored-files compile-assets-timed {})
-         (start-watcher! % ignored-files compile-assets-timed))
+         (start-watcher-for-changes! % ignored-files compile-assets-timed opts)
+         (start-watcher! % ignored-files (partial compile-assets-timed opts)))
       ["content" "themes"])))
 
 (defn wrap-subdirectories
