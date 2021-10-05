@@ -2,6 +2,10 @@
  :layout :post
  :tags  ["not fetch"]}
 
+Some text first
+
+<!--more-->
+
 ### This Post Not Fetch Enough
 
 some stuff happened
